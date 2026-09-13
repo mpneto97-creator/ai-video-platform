@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Video Studio</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1020;
+      color: #fff;
+      min-height: 100vh;
+    }
+    .container { max-width: 900px; margin: auto; padding: 28px 18px; }
+    header { text-align: center; margin-bottom: 28px; }
+    h1 { font-size: 32px; margin: 0 0 8px; }
+    .subtitle { color: #aeb7cc; }
+    .card {
+      background: #151c31;
+      border: 1px solid #27314d;
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+    label { display: block; font-weight: bold; margin-bottom: 10px; }
+    textarea, select {
+      width: 100%;
+      background: #0e1426;
+      color: #fff;
+      border: 1px solid #303b5c;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 16px;
+      outline: none;
+    }
+    textarea { min-height: 130px; resize: vertical; }
+    .upload {
+      border: 2px dashed #394768;
+      border-radius: 14px;
+      padding: 28px 16px;
+      text-align: center;
+      cursor: pointer;
+      color: #b9c2d6;
+    }
+    .upload:hover { border-color: #6678a8; }
+    input[type=file] { display: none; }
+    .preview { max-width: 100%; max-height: 280px; margin-top: 16px; border-radius: 12px; display: none; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    button {
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      padding: 15px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #fff;
+      color: #101522;
+    }
+    button:hover { opacity: .9; }
+    .status { margin-top: 14px; color: #aeb7cc; text-align: center; }
+    @media (max-width: 600px) { .row { grid-template-columns: 1fr; } h1 { font-size: 27px; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎬 AI Video Studio</h1>
+      <div class="subtitle">Crie vídeos com texto, foto ou texto + foto</div>
+    </header>
+
+    <div class="card">
+      <label>1. Imagem de referência (opcional)</label>
+      <label class="upload" for="imageInput">
+        📷 Toque aqui para enviar uma foto
+        <input id="imageInput" type="file" accept="image/*">
+      </label>
+      <img id="preview" class="preview" alt="Prévia da imagem">
+    </div>
+
+    <div class="card">
+      <label for="prompt">2. Descreva o vídeo</label>
+      <textarea id="prompt" placeholder="Ex.: Faça o carro começar a andar, com a câmera acompanhando lateralmente ao pôr do sol..."></textarea>
+    </div>
+
+    <div class="card">
+      <label>3. Configurações</label>
+      <div class="row">
+        <div>
+          <label for="duration">Duração</label>
+          <select id="duration">
+            <option value="5">5 segundos</option>
+            <option value="10">10 segundos</option>
+            <option value="15">15 segundos</option>
+          </select>
+        </div>
+        <div>
+          <label for="format">Formato</label>
+          <select id="format">
+            <option value="9:16">9:16 — Vertical</option>
+            <option value="16:9">16:9 — Horizontal</option>
+            <option value="1:1">1:1 — Quadrado</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <button id="generate">✨ GERAR VÍDEO</button>
+      <div id="status" class="status">A geração real será conectada à API de vídeo na próxima etapa.</div>
+    </div>
+  </div>
+
+  <script>
+    const imageInput = document.getElementById('imageInput');
+    const preview = document.getElementById('preview');
+    const generate = document.getElementById('generate');
+    const status = document.getElementById('status');
+
+    imageInput.addEventListener('change', () => {
+      const file = imageInput.files[0];
+      if (!file) return;
+      preview.src = URL.createObjectURL(file);
+      preview.style.display = 'block';
+    });
+
+    generate.addEventListener('click', () => {
+      const prompt = document.getElementById('prompt').value.trim();
+      if (!prompt && !imageInput.files[0]) {
+        status.textContent = 'Envie uma foto ou escreva uma descrição para começar.';
+        return;
+      }
+      status.textContent = 'Interface pronta. Agora vamos conectar o gerador de vídeo por IA.';
+    });
+  </script>
+</body>
+</html>
